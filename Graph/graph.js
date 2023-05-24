@@ -341,20 +341,43 @@ const grid = [
 
 const islandCount = (grid) => {
   let visited = new Set()
+  let islands = {}
+  let isLandCount = 0
 
   let rowLength = grid.length;
   for (let row = 0; row < rowLength; row++) {
     let colLength = grid[row].length;
     for (let column = 0; column < colLength; column++) {
+      let current = grid[row, column]
+      if(current === 'L' && !visited.has([row, column])) {
+        traverse(row, column, (row, column) => visited.add([row, column]))
+      }
 
-      
+      console.log(neighbours);
 
-
-
-      console.log(grid[row][column]);
+      // console.log(grid[row][column]);
     }
   }
 };
+
+function traverseIsland(row, column, addToVisited) {
+  let current = grid[row][column]
+
+  if(current === 'L') {
+    let left = column !== 0 ? grid[row, column-1] : null
+    let top = row !== 0 ?  grid[row-1, column] : null
+    let right = column + 1 < colLength ?  grid[row, column + 1] : null
+    let bottom = row + 1 < rowLength ? grid[row+1, column] : null
+
+  }
+
+
+
+  visited.add([row,column])
+
+  let neighbours = [left, top, right, bottom]
+
+}
 
 islandCount(grid);
 // let numberOfComponents = 0;
