@@ -339,47 +339,65 @@ const grid = [
   ["L", "L", "W", "W", "W"],
 ];
 
+let visited = new Set();
+let islands = {};
+let islandCounter = 0;
+let rowLength = 0;
+let colLength = 0;
+
 const islandCount = (grid) => {
-  let visited = new Set()
-  let islands = {}
-  let isLandCount = 0
-
-  let rowLength = grid.length;
+  rowLength = grid.length;
   for (let row = 0; row < rowLength; row++) {
-    let colLength = grid[row].length;
+    colLength = grid[row].length;
     for (let column = 0; column < colLength; column++) {
-      let current = grid[row, column]
-      if(current === 'L' && !visited.has([row, column])) {
-        traverse(row, column, (row, column) => visited.add([row, column]))
+      if (!visited.has(`${row},${column}`)) {
+        let current = grid[row][column];
+        if (current === "L") {
+          traverseIsland(row, column);
+          islandCounter += 1;
+        } else {
+          visited.add(`${row},${column}`);
+        }
       }
-
-      console.log(neighbours);
-
-      // console.log(grid[row][column]);
     }
   }
+  console.log(islands);
 };
 
-function traverseIsland(row, column, addToVisited) {
-  let current = grid[row][column]
-
-  if(current === 'L') {
-    let left = column !== 0 ? grid[row, column-1] : null
-    let top = row !== 0 ?  grid[row-1, column] : null
-    let right = column + 1 < colLength ?  grid[row, column + 1] : null
-    let bottom = row + 1 < rowLength ? grid[row+1, column] : null
-
+function traverseIsland(row, column) {
+  let currentLoc = [row, column];
+  if (visited.has(`${row},${column}`)) {
+    return;
   }
+  let current = grid[row][column];
 
+  visited.add(`${row},${column}`);
 
+  if (current === "L") {
+    islands[islandCounter] === undefined
+      ? (islands[islandCounter] = [currentLoc])
+      : (islands[islandCounter] = [...islands[islandCounter], currentLoc]);
 
-  visited.add([row,column])
+    let neighbours = findNeigh(row, column);
 
-  let neighbours = [left, top, right, bottom]
+    for (const neigh of neighbours) {
+      if (neigh === null) continue;
+      let [row, column] = neigh;
+      if (grid[row][column] === "L") traverseIsland(row, column);
+    }
+  }
+}
 
+function findNeigh(row, column) {
+  let left = column !== 0 ? [row, column - 1] : null;
+  let top = row !== 0 ? [row - 1, column] : null;
+  let right = column + 1 < colLength ? [row, column + 1] : null;
+  let bottom = row + 1 < rowLength ? [row + 1, column] : null;
+  return [left, top, right, bottom];
 }
 
 islandCount(grid);
+
 // let numberOfComponents = 0;
 // let components = {};
 // function test(node) {
