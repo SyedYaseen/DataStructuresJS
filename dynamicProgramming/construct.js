@@ -133,6 +133,8 @@ const bestConstructMemo = (target, wordBank, memo = {}) => {
 // console.log(bestConstructMemo("abcdef", ["ab", "abc", "cd", "def", "abcdef"]));
 // console.log(bestConstruct("abcdef", ["ab", "abc", "cd", "def", "abcdef"]));
 
+//Here I am check if the word is present anywhere at all
+
 const countCombo = (target, wordBank) => {
   if (target === "") return 1;
 
@@ -147,6 +149,24 @@ const countCombo = (target, wordBank) => {
   return count;
 };
 
+//Here I am checking if the word is present only as a prefix. Hence using slice
+
+const countComboSlice = (target, wordBank) => {
+  if (target === "") return 1;
+
+  let count = 0;
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      const numWays = countComboSlice(target.slice(word.length), wordBank);
+
+      count = count + numWays;
+    }
+  }
+
+  return count;
+};
+
+// console.log(countComboSlice("purple", ["purp", "p", "ur", "le", "purpl"]));
 // console.log(countCombo("abcdef", ["ab", "abc", "cd", "def", "abcdef"]));
 
 const countComboMemo = (target, wordBank, memo = {}) => {
@@ -168,30 +188,104 @@ const countComboMemo = (target, wordBank, memo = {}) => {
 // console.log(
 //   countComboMemo(
 //     "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeff",
-//     ["ee", "eee", "eeeee", "eeeee", "eeeeeee", "f"]
+//     ["ee", "eee", "eeeee", "eeeee", "eeeeeee"]
 //   )
 // );
 // console.log(countComboMemo("purple", ["purp", "p", "ur", "le", "purpl"]));
 
 const allConstruct = (target, wordBank) => {
-  if (target === "") return [];
+  if (target === "") return [[]];
 
-  // let allCombo = null;
-  let combo = null;
+  let combo = [];
   for (const word of wordBank) {
     if (target.includes(word)) {
       let slicedTarget = target.replace(word, "");
       let result = allConstruct(slicedTarget, wordBank);
 
-      if (result !== null && result.length >= 0) {
-        if (combo === null) combo = [...result, word];
-        else combo.push([...result, word]);
-      }
+      if (result.length !== 0)
+        combo = combo.concat(result.map((innerCombo) => [...innerCombo, word]));
     }
   }
 
-  if (combo === null) return null;
-  return [combo];
+  if (combo === null) return [];
+  return combo;
 };
 
+// let res = allConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd", "ef", "c"]);
+// console.log(res);
 // console.log(allConstruct("purple", ["purp", "p", "ur", "le", "purpl"]));
+
+const allConstructMemo = (target, wordBank, memo = {}) => {
+  if (target === "") return [[]];
+  if (target in memo) return memo[target];
+
+  let combo = [];
+  for (const word of wordBank) {
+    if (target.includes(word)) {
+      let slicedTarget = target.replace(word, "");
+      let result = allConstructMemo(slicedTarget, wordBank);
+
+      if (result.length !== 0)
+        combo = combo.concat(result.map((innerCombo) => [...innerCombo, word]));
+    }
+  }
+
+  memo[target] = combo;
+  return combo;
+};
+
+/* 
+In this problem the best case is a exponential memory, because it needs to go through the 
+all the combos on the leaf. So it wont return a value even its memoized. It throws a 
+out of memory error.
+*/
+
+const allConstructMemoSlice = (target, wordBank, memo = {}) => {
+  if (target === "") return [[]];
+  if (target in memo) return memo[target];
+
+  let combo = [];
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      let suffix = target.slice(word.length);
+      let suffixWays = allConstructMemoSlice(suffix, wordBank, memo);
+      let targetWays = suffixWays.map((way) => [word, ...way]);
+      combo = combo.concat(targetWays);
+    }
+  }
+
+  memo[target] = combo;
+  return combo;
+};
+
+// let res = allConstructMemoSlice("abcdef", [
+//   "ab",
+//   "abc",
+//   "cd",
+//   "def",
+//   "abcd",
+//   "ef",
+//   "c",
+// ]);
+// console.log(res);
+
+console.log(
+  allConstructMemoSlice(
+    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeff",
+    ["ee", "eee", "eeeee", "eeeee", "eeeeeee", "ff"]
+  )
+);
+
+// console.log(
+//   allConstructMemoSlice("purple", ["purp", "p", "ur", "le", "purpl"])
+// );
+
+// let a = [
+//   ["dfsdfa", "b", "c"],
+//   ["d", "e"],
+// ];
+// let b = [["g", "h"]];
+// let d = [];
+// d = a.map((x) => [...x, "val"]);
+// console.log(d);
+// console.log([...a, ...b]); // [ [ 'dfsdfa', 'b', 'c' ], [ 'd', 'e' ], [], [ 'g', 'h' ] ]
