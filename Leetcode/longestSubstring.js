@@ -14,113 +14,35 @@
 // Explanation: The answer is "wke", with the length of 3.
 // Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
-// const sub = (s) => {
-//   let mapStr = {}
-//   let size = 0
-//   let longest = 0
+let str = ["pwwkew", "abcabcbb", "dvdf", "bbbb"]
+// str = ["abcabcbb"]
+// str = ["bcdabedb"]
+// str = ["pwwkew"]
+// str = ["bbbb"]
 
-//   for (let i = 0; i < s.length; i++) {
-//     if (s[i] in mapStr) {
-//       if (size > longest) longest = size
-//       mapStr = {}
-//       size = 0
-//     }
-//     mapStr[s[i]] = 1
-//     size += 1
+const sub = (s) => {
+  len = s.length
+  let result = 0
 
-//     console.log("Size here", s[i], size)
-//   }
+  if (len === 0) result = 0
+  if (len === 1) result = 1
 
-//   if (size > longest) longest = size
-//   return longest
-// }
-
-// j - i <= longest
-
-// let s = ["pwwkew", "abcabcbb", "dvdf"]
-
-// const sub = (str) => {
-//   let i = 0
-//   let j = 0
-//   let longest = 0
-
-//   while (i <= j && j < str.length) {
-//     if (str[i] != str[j]) {
-//       if (longest < i - j + 1 || longest === 0) longest = j - i + 1
-//     }
-//     if (str[i] === str[j] && i !== j) i = i + 1
-//     j += 1
-//     console.log("longest", longest, "i", i, str[i], "j", j, str[j])
-//   }
-//   return longest
-// }
-
-// s.forEach((str) => console.log(sub(str)))
-
-// let s = ["pwwkew", "abcabcbb", "dvdf"]
-let s = ["abcabcbb"]
-
-const sub = (str) => {
-  let i = 0
-  let j = 0
-  let longest = 0
-  let current = 0
-  let len = str.length
-  let hash = {}
-
-  if (len === 0) return 0
-  if (len === 1) return 1
-
-  if (len === 2 && str[0] === str[1]) return 1
-  if (len === 2 && str[0] !== str[1]) return 2
+  i = 0
+  j = 0
+  hash = []
 
   while (j < len) {
-    if (i === j) {
-      hash[str[j]] = 1
-      current = j - i + 1
-    }
-
-    if (s[j] in hash && i !== j) {
-      delete hash[str[j]]
-      current = j - i + 1
-      if (longest < current) longest = current
+    let firstDuplicateIndex = hash.indexOf(s[j])
+    if (firstDuplicateIndex === -1) {
+      hash.push(s[j])
+      if (result < hash.length) result = hash.length
+      j += 1
+    } else {
+      hash = hash.slice(firstDuplicateIndex + 1)
       i += 1
-      j = i
-      continue
     }
-
-    if (str[i] !== str[j]) {
-      hash[str[j]] = 1
-      current = j - i + 1
-    }
-
-    j += 1
   }
-
-  return longest
+  return result
 }
 
-s.forEach((str) => console.log(sub(str)))
-// console.log("longest", longest, "   ", "i:", i, str[i], "   ", "j:", j, str[j])
-
-// while (j < str.length) {
-//   if (i === j) {
-//     hash[str[j]] = 1
-//     j += 1
-//   }
-
-//   if (str[j] in hash) {
-//     if (longest < current) longest = current
-//     delete hash[str[j]]
-//     i += 1
-//     j = i
-//     current = 0
-//     continue
-//   }
-
-//   if (str[i] !== str[j]) {
-//     current = j - i + 1
-//     hash[str[j]] = 1
-//   }
-//   j += 1
-// }
+str.forEach((s) => console.log(sub(s)))
