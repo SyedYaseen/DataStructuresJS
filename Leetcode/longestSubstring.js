@@ -14,24 +14,19 @@
 // Explanation: The answer is "wke", with the length of 3.
 // Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
-let str = ["pwwkew", "abcabcbb", "dvdf", "bbbb"]
+let str = ["pwwkew", "abcabcbb", "dvdf", "bbbb", ""]
 // str = ["abcabcbb"]
 // str = ["bcdabedb"]
 // str = ["pwwkew"]
 // str = ["bbbb"]
 
 const sub = (s) => {
-  len = s.length
   let result = 0
-
-  if (len === 0) result = 0
-  if (len === 1) result = 1
-
   i = 0
   j = 0
   hash = []
 
-  while (j < len) {
+  while (j < s.length) {
     let firstDuplicateIndex = hash.indexOf(s[j])
     if (firstDuplicateIndex === -1) {
       hash.push(s[j])
