@@ -54,40 +54,44 @@ class LinkedList {
   }
 }
 
-ll1 = new LinkedList(new node(2))
-ll1.appendNode(new node(4))
-ll1.appendNode(new node(3))
+function ListNode(val, next) {
+  this.val = val === undefined ? 0 : val
+  this.next = next === undefined ? null : next
+}
 
-ll2 = new LinkedList(new node(5))
-ll2.appendNode(new node(6))
-ll2.appendNode(new node(4))
+let ll1 = new ListNode(2, new ListNode(4, new ListNode(3)))
+let ll2 = new ListNode(5, new ListNode(6, new ListNode(4)))
+
+ll1 = new ListNode(2, new ListNode(4, new ListNode(3, new ListNode(9))))
 
 const twoSum = (l1, l2) => {
-  current1 = l1.head
-  current2 = l2.head
   let carry = 0
-  let result = new LinkedList()
+  let dummyHead = new ListNode(0)
+  let tail = dummyHead
 
-  while (current1 !== null || current2 !== null) {
-    let sum = current1.data + current2.data + carry
+  while (l1 !== null || l2 !== null || carry !== 0) {
+    if (l1 === null) l1 = new ListNode(0)
+    if (l2 === null) l2 = new ListNode(0)
+
+    let sum = l1.val + l2.val + carry
 
     if (sum >= 10) {
-      result = result.appendNode(new node(sum - 10))
+      sum = sum - 10
       carry = 1
     } else {
-      result = result.appendNode(new node(sum))
       carry = 0
     }
 
-    current1 = current1.next
-    current2 = current2.next
+    newNode = new ListNode(sum)
+    tail.next = newNode
+    tail = tail.next
+
+    l1 = l1.next
+    l2 = l2.next
   }
-  return result
+  return dummyHead.next
 }
 
 let result = twoSum(ll1, ll2)
-console.log(result.traverse())
+console.log(result)
 
-// let a = new LinkedList()
-// a.appendNode(new node(5))
-// console.log(a)
