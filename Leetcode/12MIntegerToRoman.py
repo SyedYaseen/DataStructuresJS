@@ -15,9 +15,12 @@ import math
 
 hash = {
     1: "I",
+    4: "IV",
     5: "V",
+    9: "IX",
     10: "X",
     50: "L",
+    90: "XC",
     100: "C",
     500: "D",
     1000: "M"
@@ -29,13 +32,37 @@ def intToRoman(num: int) -> str:
         return ""
 
     st = str(num)
-    digits = len(st)
     result = ""
 
-    place = 1
-    for i in st:
+    place = 10 ** (len(st) - 1)
+    index = 0
 
-        print(i)
+    while index < len(st):
+        current_num = int(st[index])
+
+# Input: num = 1994
+# Output: "MCMXCIV"
+# Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+
+        while current_num > 0:
+            value = current_num * place
+            print("Place:", place, "value:", value)
+
+            if current_num >= 5:
+                result += result + hash[5*place]
+                current_num -= current_num
+            elif current_num == 4 or current_num == 9:
+                result += result + hash[value]
+                current_num -= current_num
+            else:
+                result += hash[place]
+                current_num -= 1
+
+        # result = hash[current_num] + result
+
+        place /= 10
+        index += 1
+
     # if digits == 1:
     #     for i in range(num):
     #         result = result + "I"
@@ -43,4 +70,4 @@ def intToRoman(num: int) -> str:
     return result
 
 
-print(intToRoman(3))
+print(intToRoman(88))

@@ -36,7 +36,7 @@ const convert = (s, numRows) => {
   if (numRows === 1) return s
 
   let l = s.length
-
+  
   if (l <= numRows) return s
 
   let result = new Array(numRows)
