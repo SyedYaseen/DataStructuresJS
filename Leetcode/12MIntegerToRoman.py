@@ -13,16 +13,19 @@
 import math
 
 
-hash = {
+numToRom = {
     1: "I",
     4: "IV",
     5: "V",
     9: "IX",
     10: "X",
+    40: "XL",
     50: "L",
     90: "XC",
     100: "C",
+    400: "CD",
     500: "D",
+    900: "CM",
     1000: "M"
 }
 
@@ -39,35 +42,26 @@ def intToRoman(num: int) -> str:
 
     while index < len(st):
         current_num = int(st[index])
-
-# Input: num = 1994
-# Output: "MCMXCIV"
-# Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
-
+        print("Outerloop", current_num)
         while current_num > 0:
-            value = current_num * place
-            print("Place:", place, "value:", value)
 
-            if current_num >= 5:
-                result += result + hash[5*place]
-                current_num -= current_num
-            elif current_num == 4 or current_num == 9:
-                result += result + hash[value]
-                current_num -= current_num
+            if current_num == 9:
+                result = result + numToRom[current_num*place]
+                current_num -= 9
+            elif current_num >= 5:
+                result = result + numToRom[5*place]
+                current_num -= 5
+            elif current_num == 4:
+                result = result + numToRom[4*place]
+                current_num -= 4
             else:
-                result += hash[place]
+                result += numToRom[place]
                 current_num -= 1
-
-        # result = hash[current_num] + result
 
         place /= 10
         index += 1
 
-    # if digits == 1:
-    #     for i in range(num):
-    #         result = result + "I"
-
     return result
 
 
-print(intToRoman(88))
+print(intToRoman(40))
