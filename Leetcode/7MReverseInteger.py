@@ -12,4 +12,5 @@ def reverse(number):
     return res
 
 
-print(reverse(1534236469))
+# print(reverse(1534236469))
+print((2**31)-1)
