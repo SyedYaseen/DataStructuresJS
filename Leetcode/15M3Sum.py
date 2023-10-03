@@ -55,12 +55,32 @@
 # print("Result", threeSum(nums))
 
 def threeSum(nums):
-    memo = {}
-    result = set()
+    result = []
     nums.sort()
 
-    for i in nums:
-        
+    for firstNum in nums:
+        res = twoSum(nums, -firstNum)
+        if res != None:
+            res.append(firstNum)
+        result.append(res)
+    return res
+
+
+def twoSum(numbers, target):
+    res = None
+    l, r = 0, len(numbers) - 1
+    while l >= 0 and r < len(numbers) and l < r:
+        sum = numbers[l] + numbers[r]
+        print(sum)
+        if sum == target:
+            return [l + 1, r + 1]
+        elif sum < target:
+            l += 1
+        elif sum > target:
+            r -= 1
+
+    return res
+
 
 nums = [-1, 0, 1, 2, -1, -4]
 print("Result", threeSum(nums))

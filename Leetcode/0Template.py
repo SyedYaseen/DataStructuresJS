@@ -1,3 +1,27 @@
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+ll1 = [1, 4, 5]
+ll2 = [1, 3, 4]
+ll3 = [2, 6]
+
+ll_arr = [ll1, ll2, ll3]
+Lls = []
+for i in ll_arr:
+    head = None
+    tail = None
+    for j in i:
+        if head is None:
+            head = ListNode(j)
+            tail = head
+        else:
+            tail.next = ListNode(j)
+            tail = tail.next
+    Lls.append(head)
+
+
 class Solution(object):
     def func(self, numbers, target):
         """
@@ -6,16 +30,6 @@ class Solution(object):
         :rtype: List[int]
         """
         res = None
-        l, r = 0, len(numbers) - 1
-        while l >= 0 and r < len(numbers) and l < r:
-            sum = numbers[l] + numbers[r]
-            print(sum)
-            if sum == target:
-                return l + 1, r + 1
-            elif sum < target:
-                l += 1
-            elif sum > target:
-                r -= 1
 
         return res
 
