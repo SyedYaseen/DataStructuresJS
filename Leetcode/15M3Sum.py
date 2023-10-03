@@ -28,28 +28,39 @@
 # print(threeSum(nums))
 
 
+# def threeSum(nums):
+#     memo = {}
+#     result = set()
+#     nums.sort()
+
+#     for i in nums:
+#         if i in memo:
+#             result.add([i, memo[i]])
+#             continue
+#         copy = nums[:]
+#         copy.remove(i)
+
+#         twoSumMemo = {}
+#         twoSumResult = set()
+
+#         for j in copy:
+#             complement = -i - j
+#             if complement in twoSumMemo:
+#                 twoSumResult.add(tuple([complement, j]))
+#             twoSumMemo[complement] = complement
+#             print(-i, j,    twoSumResult)
+
+
+# nums = [-1, 0, 1, 2, -1, -4]
+# print("Result", threeSum(nums))
+
 def threeSum(nums):
     memo = {}
     result = set()
     nums.sort()
 
     for i in nums:
-        if i in memo:
-            result.add([i, memo[i]])
-            continue
-        copy = nums[:]
-        copy.remove(i)
-
-        twoSumMemo = {}
-        twoSumResult = set()
-
-        for j in copy:
-            complement = -i - j
-            if complement in twoSumMemo:
-                twoSumResult.add(tuple([complement, j]))
-            twoSumMemo[complement] = complement
-            print(-i, j,    twoSumResult)
-
+        
 
 nums = [-1, 0, 1, 2, -1, -4]
 print("Result", threeSum(nums))
