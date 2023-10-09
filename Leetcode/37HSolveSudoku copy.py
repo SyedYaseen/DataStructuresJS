@@ -66,9 +66,7 @@ class Solution(object):
         initLen = 99
         endKeyListLength = 0
 
-        # Process of elimination
-        while bool(startKeyList) and initLen != endKeyListLength:
-            initLen = len(startKeyList)
+        def reduceCandidates(startKeyList):
             for key in startKeyList:
                 row = int(key[0])
                 col = int(key[1])
@@ -100,57 +98,23 @@ class Solution(object):
                     del emptyVal[f'{row}{col}']
                     startKeyList.remove(f'{row}{col}')
 
-            endKeyListLength = len(startKeyList)
+            return len(startKeyList)
 
-        row_group = {}
-        col_group = {}
-        sub_group = {}
+        # Process of elimination
+        while bool(startKeyList) and initLen != endKeyListLength:
+            initLen = len(startKeyList)
+            endKeyListLength = reduceCandidates(startKeyList)
 
-        subtract_from_row = {}
-        subtract_from_col = {}
-        
-        min_candidates = 2
         for key in startKeyList:
             print()
             print(key, emptyVal[key])
-            if len(emptyVal[key]) == min_candidates:
-                if key[0] not in row_group:
-                    row_group[key[0]] = []
-                    row_group[key[0]].append(emptyVal[key])
-                else:
-                    if emptyVal[key] in row_group[key[0]]:
-                        print("This is true", emptyVal[key])
-                    row_group[key[0]].append(emptyVal[key])
 
-                if key[1] not in col_group:
-                    col_group[key[1]] = []
-                    col_group[key[1]].append(emptyVal[key])
-                else:
-                    if emptyVal[key] in col_group[key[1]]:
-                        print("This is true", emptyVal[key])
-                    col_group[key[1]].append(emptyVal[key])
+            min_candidates = 2
+            if len(emptyVal[key]) == 2:
+                row = int(key[0])
+                col = int(key[1])
 
-            # row_group[key[0]] = emptyVal[key]
-
-            # if len(emptyVal[key]) == 2:
-            #     row = int(key[0])
-            #     col = int(key[1])
-
-            # for i in startKeyList:
-            #     print("Starts with", i[0])
-            #     print("ends with", i[1])
-            # if i[0] == row:
-            #     row_group[i[0]] = startKeyList[i]
-
-            # print(key, emptyVal[key])
-        print(row_group)
-        # for i in row_group:
-        #     print(i)
-        # print()
-        # for i in col_group:
-        #     print(i)
-        print(col_group)
-        # print(emptyVal)
+                print(key, emptyVal[key])
 
         # for key in emptyVal:
         #     print(key, emptyVal[key])
