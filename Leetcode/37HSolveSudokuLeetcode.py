@@ -163,10 +163,10 @@ class Solution(object):
 
         for row in range(9):
             for col in range(9):
-                if type(board[row][col]) == set and len(board[row][col]) == 0:
-                    print("Invalid - Empty set", row, col)
+                if type(board[row][col]) == list and len(board[row][col]) == 0:
+                    # print("Invalid - Empty set", row, col)
                     isValid = False
-                    self.printboard(board)
+                    # self.printboard(board)
                     return -1, isValid, board
 
                 if type(board[row][col]) == str and board[row][col] != '.':
@@ -185,7 +185,7 @@ class Solution(object):
 
         for row in range(9):
             for col in range(9):
-                if board[row][col] == '.' or type(board[row][col]) == set:
+                if board[row][col] == '.' or type(board[row][col]) == list:
                     squareNo = self.getSquare(row, col)
                     candidates = self.possible - \
                         row_values[row] - col_values[col] - \
@@ -201,7 +201,7 @@ class Solution(object):
                         FinalEmpties -= 1
                         board[row][col] = candidates.pop()
                     else:
-                        board[row][col] = candidates
+                        board[row][col] = list(candidates)
                         self.row_group[row].append(candidates)
                         self.col_group[col].append(candidates)
                         self.sqr_group[squareNo].append(candidates)
@@ -225,42 +225,42 @@ class Solution(object):
             if len(self.triplesRow[i]) != 0 and len(self.row_group[i]) > 3:
                 for tri in self.triplesRow[i]:
                     for col in range(9):
-                        if type(board[i][col]) == set and not set(board[i][col]).issubset(tri):
-                            newCandidates = board[i][col] - tri
+                        if type(board[i][col]) == list and not board[i][col].issubset(tri):
+                            newCandidates = set(board[i][col]) - tri
                             if newCandidates != board[i][col] and board[i][col] in self.row_group[i]:
                                 self.row_group[i].remove(board[i][col])
                                 self.row_group[i].append(newCandidates)
-                                board[i][col] = newCandidates
+                                board[i][col] = list(newCandidates)
 
             if len(self.triplesCol[i]) != 0 and len(self.col_group[i]) > 3:
                 for tri in self.triplesCol[i]:
                     for row in range(9):
-                        if type(board[row][i]) == set and not set(board[row][i]).issubset(tri):
-                            newCandidates = board[row][i] - tri
-                            if newCandidates != board[row][i] and board[row][i] in self.col_group[i]:
+                        if type(board[row][i]) == list and not board[row][i].issubset(tri):
+                            newCandidates = set(board[row][i]) - tri
+                            if newCandidates != set(board[row][i]) and set(board[row][i]) in self.col_group[i]:
                                 self.col_group[i].remove(board[row][i])
                                 self.col_group[i].append(newCandidates)
-                                board[row][i] = newCandidates
+                                board[row][i] = list(newCandidates)
 
             if len(self.triplesSquare[i]) != 0 and len(self.sqr_group[i]) > 3:
                 for tri in self.triplesSquare[i]:
                     rowMin, rowMax, colMin, colMax = self.getSquareLimits(i)
                     for row in range(rowMin, rowMax):
                         for col in range(colMin, colMax):
-                            if type(board[row][col]) == set and not board[row][col].issubset(tri):
-                                newCandidates = board[row][col] - tri
-                                if newCandidates != board[row][col] and board[row][col] in self.sqr_group[i]:
+                            if type(board[row][col]) == list and not board[row][col].issubset(tri):
+                                newCandidates = set(board[row][col]) - tri
+                                if newCandidates != set(board[row][col]) and set(board[row][col]) in self.sqr_group[i]:
                                     self.sqr_group[i].remove(
                                         board[row][col])
                                     self.sqr_group[i].append(newCandidates)
-                                    board[row][col] = newCandidates
+                                    board[row][col] = list(newCandidates)
 
     def AssignToBoard(self, board):
         for row in range(9):
             for col in range(9):
-                if type(board[row][col]) == set and len(board[row][col]) == 0:
+                if type(board[row][col]) == list and len(board[row][col]) == 0:
                     return None
-                if type(board[row][col]) == set and len(board[row][col]) == 1:
+                if type(board[row][col]) == list and len(board[row][col]) == 1:
                     board[row][col] = board[row][col].pop()
 
     def runElimination(self, board):
@@ -339,7 +339,7 @@ class Solution(object):
                             r = row
                             c = col
 
-                if type(colitem) == set and len(colitem) == 0:
+                if type(colitem) == list and len(colitem) == 0:
                     return (False, r, c, None)
 
                 if type(rowitem) == str:
@@ -397,7 +397,7 @@ class Solution(object):
                     if isValid and FinalEmpties == 0:
                         board = tempBoard
                         break
-        # return board
+        return board
 
 
 sln = Solution()
