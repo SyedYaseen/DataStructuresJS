@@ -383,7 +383,7 @@ class Solution(object):
     def func(self, board):
         isComplete = False
         board, isValid, FinalEmpties = self.runElimination(board)
-        self.printboard(board)
+        # self.printboard(board)
 
         if isValid and FinalEmpties != 0:
             isComplete, row, col, candidates = self.getCandidates(board)
@@ -394,10 +394,11 @@ class Solution(object):
                     tempBoard[row][col] = candidates.pop()
                     tempBoard, isValid, FinalEmpties = self.runElimination(
                         tempBoard)
+                    self.printboard(tempBoard)
                     if isValid and FinalEmpties == 0:
                         board = tempBoard
                         break
-        # return board
+        return board
 
 
 sln = Solution()
