@@ -1,17 +1,20 @@
 def BuySell(nums):
     i = 0
-    j = 1
+    j = 0
     currentProfit = -99999999999999999
 
-    while i < j:
+    while i <= j and j < len(nums):
         diff = nums[j] - nums[i]
-        if nums[i] - nums[j]:
-            i += 1
 
-        if diff > currentProfit:
+        if nums[i] > nums[j]:
+            i += 1
+            continue
+
+        elif diff > currentProfit:
             currentProfit = diff
 
         j += 1
+
     return currentProfit
 
 
