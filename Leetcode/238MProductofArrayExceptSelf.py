@@ -16,6 +16,12 @@
 
 def productExceptSelf(nums):
     res = []
+    for i in range(0, len(nums)):
+        temp = 1
+        for j in range(0, len(nums)):
+            if i != j:
+                temp *= nums[j]
+        res.append(temp)
 
     return res
 

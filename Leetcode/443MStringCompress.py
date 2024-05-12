@@ -1,25 +1,41 @@
 def compress(chars):
-    """
-        :type chars: List[str]
-        :rtype: int
-        """
+    def appendCount(count):
+        if count == 1:
+            return []
+        elif count > 9:
+            return list(str(count))
+        else:
+            return [str(count)]
     current = ""
     currentCount = 0
     res = []
+    if len(chars) == 1:
+        return len(chars)
 
-    for i in chars:
-        if i == current:
-            currentCount += 1
-        else:
-            current = i
+    for i in range(0, len(chars)):
+        if i == 0:
+            current = chars[i]
             currentCount = 1
 
-            if current != "":
-                res.append(current)
-                res.append(currentCount)
+        elif current == chars[i]:
+            currentCount += 1
 
-    return res
+        elif current != chars[i]:
+            res.append(current)
+            res = res + appendCount(currentCount)
+            current = chars[i]
+            currentCount = 1
+
+    res.append(current)
+    res = res + appendCount(currentCount)
+
+    for i in range(len(res)):
+        chars[i] = res[i]
+    return len(res)
 
 
 print(compress(["a", "a", "b", "b", "c", "c", "c"]))
-# "a2b2c3"
+print(compress(["a"]))
+print(compress(["a", "b", "b", "b", "b", "b",
+      "b", "b", "b", "b", "b", "b", "b"]))
+print(compress(["a", "b", "c"]))
